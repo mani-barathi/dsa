@@ -31,8 +31,8 @@ class LinkedList:
             current.next = new_node
 
     def prepend(self,new_node):
-            new_node.next = self.head
-            self.head = new_node
+        new_node.next = self.head
+        self.head = new_node
 
     def insert(self,new_node,value):
         current = self.search(value)
@@ -85,22 +85,45 @@ class LinkedList:
                 next_node = next_node.next
             current = current.next
 
+    def reverse(self):
+        if self.head is None:
+            return
+
+        prv = None
+        cur = self.head
+        # a -> b -> c -> d -> None
+        # a -> None                 b -> c -> d -> None 
+        # b -> a -> None            c -> d -> None
+        # c -> b -> a -> None       d -> None
+        # d -> c -> b -> a -> None
+        while True:
+            nxt = cur.next
+            cur.next = prv
+            prv = cur
+            if not nxt :
+                break
+            cur = nxt
+            pass
+
+        return cur
+
+
 def main():
     l = LinkedList()
-    l.delete(10)
-    l.prepend(Node(10))
-    l.append(Node(5))
-    l.prepend(Node(20))
-    l.insert(Node(15),10)
-    l.insert(Node(13),11)
+    l.append(Node(10))
+    l.prepend(Node(5))
+    l.insert(Node(12),10)
+    l.append(Node(15))
     print(l)
+    l.head = l.reverse()
+    print('reversed')
+    print(l)
+    l.delete(12)
+    print(l)
+    print('sorted')
     l.sort()
     print(l)
-    print(l.search(10))
-    l.delete(10)
-    l.delete(5)
-    l.delete(20)
-    print(l)
+
 
 if __name__ == "__main__":
     main()
