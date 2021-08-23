@@ -22,6 +22,13 @@ class AVLTree:
           print(current_node.value)
           self.print_tree(current_node.left, new_space)
 
+    def get_min(self,node):
+        current = node
+        while current.left:
+            current = current.left
+        return current
+
+
     def height(self,node):
         """ tree with 0 node has a height of -1
             tree with 1 node has a height of 0
@@ -83,12 +90,46 @@ class AVLTree:
 
         return node
 
+    def delete(self,node,value):
+        if not node:
+            return print(f'node with value {value} doesn\'t not exists')
+
+        if value < node.value:
+            node.left = self.delete(node.left,value)
+        elif value > node.value:
+            node.right = self.delete(node.right,value)
+        else:
+            if not node.left:
+                return node.right
+            elif not node.right:
+                return node.left
+            else:
+                replace_node = self.get_min(node.right)
+                node.value = replace_node.value
+                node.right = self.delete(node.right,replace_node.value)
+
+        bf = self.get_balance_factor(node)
+        if bf == 2  and self.get_balance_factor(node.left) >=  0:   # LL
+            return self.right_rotation(node)
+        if bf == 2  and self.get_balance_factor(node.left) == -1:   # LR
+            node.left = self.left_rotation(node.left)
+            return self.right_rotation(node)
+        if bf == -2 and self.get_balance_factor(node.right) <= 0:   # RR
+            return self.left_rotation(node)
+        if bf == -2 and self.get_balance_factor(node.right) == 1:   # RL
+            node.right = self.right_rotation(node.right)
+            return self.left_rotation(node)
+
+        return node
 
 def main():
     t = AVLTree()
     t.root = t.insert(t.root,Node(5))
     t.root = t.insert(t.root,Node(10))
     t.root = t.insert(t.root,Node(20))
+    t.root = t.insert(t.root,Node(18))
+    t.print_tree(t.root,0)
+    t.root = t.delete(t.root,5)
     t.print_tree(t.root,0)
 
 if __name__ == "__main__":
