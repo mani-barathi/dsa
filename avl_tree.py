@@ -1,3 +1,7 @@
+# AVL tree is a binary search tree where the difference between heights of left
+# & right subtress cannot be more than 1 for all nodes. 
+# The difference is called the Balance Factor(BF). BF -{-1,0,1}
+
 SPACE = 5
 
 class Node:
