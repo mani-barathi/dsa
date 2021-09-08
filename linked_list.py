@@ -107,6 +107,13 @@ class LinkedList:
 
         return cur
 
+    def reverse_recursive(self,node):
+        if node is None or node.next is None:
+            return node
+        last = self.reverse_recursive(node.next)
+        node.next.next = node
+        node.next = None
+        return last
 
 def main():
     l = LinkedList()
@@ -123,7 +130,8 @@ def main():
     print('sorted')
     l.sort()
     print(l)
-
+    l.head = l.reverse_recursive(l.head)
+    print(l)
 
 if __name__ == "__main__":
     main()
