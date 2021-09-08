@@ -115,6 +115,28 @@ class LinkedList:
         node.next = None
         return last
 
+    def reverse_using_stack(self):
+        if self.head is None:
+            return
+    
+        stack = []
+        node = self.head
+
+        while node:
+            stack.append(node)
+            node = node.next
+
+        head = stack.pop()
+        curr = head
+
+        while len(stack):
+            node = stack.pop()
+            curr.next = node
+            curr = node
+
+        node.next = None  # setting the last node to point to None
+        self.head = head
+
 def main():
     l = LinkedList()
     l.append(Node(10))
@@ -131,6 +153,8 @@ def main():
     l.sort()
     print(l)
     l.head = l.reverse_recursive(l.head)
+    print(l)
+    l.reverse_using_stack()
     print(l)
 
 if __name__ == "__main__":
