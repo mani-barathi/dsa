@@ -94,6 +94,24 @@ class Graph:
                         edge.weight = new_weight
                         break
 
+    def delete_edge(self, start_v_id, end_v_id):
+        is_edge_exists = self.check_edge_exists(start_v_id, end_v_id)
+        if not is_edge_exists:
+            return print(f'Edge do not exists between {self.get_vertex(start_v_id).name} and {self.get_vertex(end_v_id).name}')
+
+        for vertex in self.vertices:
+            if vertex.id == start_v_id:
+                for edge in vertex.edge_list:
+                    if edge.destination_vertex_id == end_v_id:
+                        vertex.edge_list.remove(edge)
+                        break
+                        
+            elif vertex.id == end_v_id:
+                for edge in vertex.edge_list:
+                    if edge.destination_vertex_id == start_v_id:
+                        vertex.edge_list.remove(edge)
+                        break
+        print(f'Edge between {self.get_vertex(start_v_id).name} and {self.get_vertex(end_v_id).name} is deleted')
 
 def main():
     g = Graph()
@@ -110,6 +128,9 @@ def main():
     g.add_edge(1,3,50)
     g.display()
     g.update_edge(1,3,60)
+    g.display()
+    g.delete_edge(1,2)
+    g.delete_edge(3,2)
     g.display()
 
 if __name__ == "__main__":
