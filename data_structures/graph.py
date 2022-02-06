@@ -8,14 +8,12 @@ class Edge:
 
 
 class Vertex:
-    index = 0
-    def __init__(self, state_name, edge_list = None):
-        """ id is an unique id for Vertex. It is incremented as new vertex gets created
+    def __init__(self, _id,state_name, edge_list = None):
+        """ id is an unique id for Vertex,
             name is the actual data,
             edge_list contains all the all edges which the vertex is connected to
         """
-        Vertex.index += 1
-        self.id = Vertex.index
+        self.id = _id
         self.name = state_name
         self.edge_list = edge_list or []
 
@@ -66,7 +64,7 @@ class Graph:
             return print(f'Invalid vertex id!')
 
         if self.check_edge_exists(start_v_id, end_v_id):
-            return print(f'edge already exists between {self.get_vertex(start_v_id).name} & {self.get_vertex(end_v_id).name}')
+            return print(f'edge already exists between {self.get_vertex(start_v_id).name} and {self.get_vertex(end_v_id).name}')
 
         for vertex in self.vertices:
             if vertex.id == start_v_id:
@@ -78,13 +76,31 @@ class Graph:
 
         print(f'Edge added between {self.get_vertex(start_v_id).name} & {self.get_vertex(end_v_id).name}')
 
+    def update_edge(self, start_v_id, end_v_id, new_weight):
+        is_edge_exists = self.check_edge_exists(start_v_id, end_v_id)
+        if not is_edge_exists:
+            return print(f'Edge do not exists between {self.get_vertex(start_v_id).name} and {self.get_vertex(end_v_id).name}')
+
+        for vertex in self.vertices:
+            if vertex.id == start_v_id:
+                for edge in vertex.edge_list:
+                    if edge.destination_vertex_id == end_v_id:
+                        edge.weight = new_weight
+                        break
+                        
+            elif vertex.id == end_v_id:
+                for edge in vertex.edge_list:
+                    if edge.destination_vertex_id == start_v_id:
+                        edge.weight = new_weight
+                        break
+
 
 def main():
     g = Graph()
 
-    v1 = Vertex('TN')
-    v2 = Vertex('KA')
-    v3 = Vertex('MH')
+    v1 = Vertex(1,'TN')
+    v2 = Vertex(2,'KA')
+    v3 = Vertex(3,'MH')
     g.add_vertex(v1)
     g.add_vertex(v2)
     g.add_vertex(v3)
@@ -92,6 +108,8 @@ def main():
     g.add_edge(1,2,70)
     g.add_edge(1,3,50)
     g.add_edge(1,3,50)
+    g.display()
+    g.update_edge(1,3,60)
     g.display()
 
 if __name__ == "__main__":
